@@ -3,23 +3,16 @@ namespace Catalog\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Doctrine\ORM\EntityManager;
 
 class CatalogController extends AbstractActionController
 {
-    protected $entityManager;
-
-    public function __construct(EntityManager $entityManager)
-    {
-        parent::__construct();
-
-        $this->entityManager = $entityManager;
-    }
-
     public function indexAction()
     {
+        $em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+
+        $products = $em->getRepository('\Catalog\Entity\Goods')->findAll();
         return new ViewModel(array(
-            'products' => $this->getEntityManager()->getRepository('Catalog\Entity\Goods')->findAll(),
+            'products' => $products,
         ));
     }
 
@@ -43,7 +36,7 @@ class CatalogController extends AbstractActionController
         }
 
         $view = new ViewModel(array(
-            'product' => $product->getArrayCopy(),
+            'product' => $product,
         ));
 
         return $view;

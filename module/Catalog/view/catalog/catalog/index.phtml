@@ -2,13 +2,20 @@
 print $this->showMessages();
 ?>
 
-<ul>
+<div class="row">
     <?php
 
     foreach($this->products as $product) {
-        print '<li>
-            <a href="' . $this->url('catalog', array('action'=>'view', 'id' => $product->getId())) . '">' . $product->getName() . '</a>
-            </li>';
+        $pict = $product->getPictures()->toArray();
+        print '<div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img src="/img/'.$product->getPictures()->first()->getPath().'" alt="...">
+                    <div class="caption">
+                        <p>'.$pict[0]->getPath().'</p>
+                        <p><a href="' . $this->url('catalog', array('action'=>'view', 'id' => $product->getId())) . '">' . $product->getName() . '</a></p>
+                    </div>
+                </div>            
+            </div>';
     }
     ?>
-</ul>
+</div>

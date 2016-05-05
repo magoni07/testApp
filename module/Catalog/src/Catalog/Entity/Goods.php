@@ -3,6 +3,7 @@
 namespace Catalog\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Goods
@@ -49,7 +50,15 @@ class Goods
      */
     private $amount;
 
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="Catalog\Entity\GoodsPict", mappedBy="goods")
+     */
+    private $pictures;
 
+    public function __construct() {
+        $this->pictures = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -151,5 +160,15 @@ class Goods
     public function getAmount()
     {
         return $this->amount;
+    }
+
+    /**
+     * Get pictures
+     *
+     * @return array
+     */
+    public function getPictures()
+    {
+        return $this->pictures;
     }
 }
