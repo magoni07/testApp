@@ -4,18 +4,33 @@ print $this->showMessages();
 
 <div class="row">
     <?php
-
-    foreach($this->products as $product) {
-        $pict = $product->getPictures()->toArray();
-        print '<div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
-                    <img src="/img/'.$product->getPictures()->first()->getPath().'" alt="...">
-                    <div class="caption">
-                        <p>'.$pict[0]->getPath().'</p>
-                        <p><a href="' . $this->url('catalog', array('action'=>'view', 'id' => $product->getId())) . '">' . $product->getName() . '</a></p>
-                    </div>
-                </div>            
-            </div>';
-    }
-    ?>
+    foreach($this->products as $product) :
+        $properties = $product->getProperties()->toArray();
+        ?>
+        <div class="col-sm-6 col-md-4">
+            <div class="row">
+            <div class="panel panel-default">
+                <div class="media-left media-middle">
+                    <a href="<?=$this->url('catalog', array('action'=>'view', 'id' => $product->getId()))?>">
+                        <img class="media-object" src="/img/lg/<?=$product->getPictures()->first()->getPath()?>" alt="<?=$product->getName()?>">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <a href="<?=$this->url('catalog', array('action'=>'view', 'id' => $product->getId()))?>">
+                        <h4 class="media-heading"><?=$product->getName()?></h4>
+                    </a>
+                    <p>
+                        <?php foreach($properties as $property) {
+                            $propValue = $property->getValue();
+                            $propName = $property->getProps()->getName();
+                            echo " $propName ($propValue) ";
+                        }
+                        ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+        </div>
+    <?php endforeach;?>
 </div>
+

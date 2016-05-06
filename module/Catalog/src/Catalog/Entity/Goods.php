@@ -56,8 +56,15 @@ class Goods
      */
     private $pictures;
 
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="Catalog\Entity\GoodsProp", mappedBy="goods")
+     */
+    private $properties;
+
     public function __construct() {
         $this->pictures = new ArrayCollection();
+        $this->properties = new ArrayCollection();
     }
 
     /**
@@ -170,5 +177,15 @@ class Goods
     public function getPictures()
     {
         return $this->pictures;
+    }
+
+    /**
+     * Get properties
+     *
+     * @return array
+     */
+    public function getProperties()
+    {
+        return $this->properties;
     }
 }

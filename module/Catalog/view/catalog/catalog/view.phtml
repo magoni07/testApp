@@ -1,5 +1,21 @@
 <?php
 print $this->showMessages();
-print '<h1>' . $product->getName() . '</h1>';
-print '<div>' . $product->getPrice() . '</div>';
-print '<div>' . $product->getDescr() . '</div>';
+
+$pictures = $product->getPictures()->toArray();
+//print '<h1>' . $product->getName() . '</h1>';
+//print '<div>' . $product->getPrice() . '</div>';
+//print '<div>' . $product->getDescr() . '</div>';
+?>
+<div class="col-xs-4">
+
+    <div class="clearfix" style="max-width:474px;">
+        <ul id="image-gallery" class="gallery list-unstyled cS-hidden">
+            <?php foreach($pictures as $pict) :?>
+            <li data-thumb="/img/lg/<?=$pict->getPath()?>">
+                <img src="/img/lg/<?=$pict->getPath()?>" />
+            </li>
+            <?php endforeach;?>
+        </ul>
+    </div>
+
+</div>
