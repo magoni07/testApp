@@ -5,31 +5,33 @@ print $this->showMessages();
 <div class="row">
     <?php
     foreach($this->products as $product) :
+        $str = '';
         $properties = $product->getProperties()->toArray();
+        foreach($properties as $property) {
+            $propValue = $property->getValue();
+            $propName = $property->getProps()->getName();
+            $str .= "/".$propName." - ".$propValue." ";
+        }
+        $text = mb_substr($str,1,400,'UTF-8')."...";
         ?>
         <div class="col-sm-6 col-md-4">
-            <div class="row">
             <div class="panel panel-default">
-                <div class="media-left media-middle">
-                    <a href="<?=$this->url('catalog', array('action'=>'view', 'id' => $product->getId()))?>">
-                        <img class="media-object" src="/img/lg/<?=$product->getPictures()->first()->getPath()?>" alt="<?=$product->getName()?>">
+                <div class="panel-heading">
+                    <a href="<?=$this->url('catalog', array('action'=>'view', 'id' => $product->getId()));?>">
+                        <h4 class="media-heading"><?=$product->getName();?></h4>
                     </a>
                 </div>
-                <div class="media-body">
-                    <a href="<?=$this->url('catalog', array('action'=>'view', 'id' => $product->getId()))?>">
-                        <h4 class="media-heading"><?=$product->getName()?></h4>
-                    </a>
-                    <p>
-                        <?php foreach($properties as $property) {
-                            $propValue = $property->getValue();
-                            $propName = $property->getProps()->getName();
-                            echo " $propName ($propValue) ";
-                        }
-                        ?>
-                    </p>
+                <div class="panel-body">
+                    <div class="media-left media-middle">
+                        <a href="<?=$this->url('catalog', array('action'=>'view', 'id' => $product->getId()));?>">
+                            <img class="media-object" src="/img/lg/<?=$product->getPictures()->first()->getPath();?>" alt="<?=$product->getName();?>">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <p><?=$text;?></p>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
     <?php endforeach;?>
 </div>

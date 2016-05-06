@@ -2,20 +2,51 @@
 print $this->showMessages();
 
 $pictures = $product->getPictures()->toArray();
-//print '<h1>' . $product->getName() . '</h1>';
-//print '<div>' . $product->getPrice() . '</div>';
-//print '<div>' . $product->getDescr() . '</div>';
-?>
-<div class="col-xs-4">
 
-    <div class="clearfix" style="max-width:474px;">
-        <ul id="image-gallery" class="gallery list-unstyled cS-hidden">
-            <?php foreach($pictures as $pict) :?>
-            <li data-thumb="/img/lg/<?=$pict->getPath()?>">
-                <img src="/img/lg/<?=$pict->getPath()?>" />
-            </li>
-            <?php endforeach;?>
-        </ul>
+$properties = $product->getProperties()->toArray();
+?>
+<div class="row">
+    <div class="col-xs-4">
+        <div class="clearfix" style="max-width:474px;">
+            <ul id="image-gallery" class="gallery list-unstyled cS-hidden">
+                <?php foreach($pictures as $pict) :?>
+                    <li data-thumb="/img/lg/<?=$pict->getPath()?>">
+                        <img src="/img/lg/<?=$pict->getPath()?>" />
+                    </li>
+                <?php endforeach;?>
+            </ul>
+        </div>
     </div>
+    <div class="col-xs-8">
+        <div class="row">
+            <h1><?=$product->getName();?></h1>
+        </div>
+        <div class="row">
+            <h3>Цена: <?=$product->getPrice();?> грн.</h3>
+            <button type="button" class="btn btn-success">Купить</button>
+            <p></p>
+        </div>
+        <div class="row">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#descr" aria-controls="descr" role="tab" data-toggle="tab">Описание</a></li>
+                <li role="presentation"><a href="#prop" aria-controls="prop" role="tab" data-toggle="tab">Характеристики</a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="descr"><p><?=$product->getDescr();?></p></div>
+                <div role="tabpanel" class="tab-pane" id="prop">
+                    <dl class="dl-horizontal">
+                        <?php
+                        foreach($properties as $property) {
+                            $propValue = $property->getValue();
+                            $propName = $property->getProps()->getName();
+                            echo "<p><dt>$propName</dt><dd>$propValue</dd></p>";
+                        }?>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
 
 </div>

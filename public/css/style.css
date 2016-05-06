@@ -31,10 +31,19 @@ div.container a.brand {
   padding: 8px 20px 12px 40px; }
 
 img.media-object {
-  height: 200px; }
+  height: 200px;
+  padding: 5px; }
 
-a:hover.media-heading, a:hover.media-body {
-  color: inherit;
-  text-decoration: none; }
+@media (min-width: 768px) {
+  .dl-horizontal dt {
+    float: left;
+    width: 300px;
+    clear: left;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+
+  .dl-horizontal dd {
+    margin-left: 300px; } }
 
 /*# sourceMappingURL=style.css.map */
