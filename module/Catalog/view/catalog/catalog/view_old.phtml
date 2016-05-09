@@ -7,19 +7,21 @@ $adr = "/img/lg/nophoto.png";
 ?>
 <div class="row">
     <div class="col-xs-4">
-        <div class="fluid_container">
-            <div class="camera_wrap camera_magenta_skin" id="camera_wrap">
+        <div class="clearfix" style="max-width:474px;">
+            <ul id="image-gallery" class="gallery list-unstyled cS-hidden">
                 <?php if (count($pictures) == 0) :?>
-                    <div data-thumb="<?=$adr?>" data-src="<?=$adr?>"></div>
+                    <li data-thumb="<?=$adr?>">
+                        <img src="<?=$adr?>"/>
+                    </li>
                 <?php else:
                     foreach($pictures as $pict) :
-                        $adr =  "/img/lg/".$pict->getPath();
-                        $thumb = "/img/thumbs/".$pict->getPath();?>
-                        <div data-thumb="<?=$thumb?>" data-src="<?=$adr?>" data-alignment="center"></div>
+                        $adr =  "/img/lg/".$pict->getPath();?>
+                        <li data-thumb="<?=$adr?>">
+                            <img src="<?=$adr?>"/>
+                        </li>
                     <?php endforeach;
                 endif;?>
-
-            </div>
+            </ul>
         </div>
     </div>
     <div class="col-xs-8">
@@ -53,5 +55,26 @@ $adr = "/img/lg/nophoto.png";
     </div>
 </div>
 <div class="row">
-
+    <div class="fluid_container">
+        <div class="camera_wrap camera_azure_skin" id="camera_wrap">
+            <?php if (count($pictures) == 0) :?>
+                <div data-thumb="<?=$adr?>" data-src="<?=$adr?>">
+                    <div class="camera_caption fadeFromBottom">
+                        <?=$product->getName();?>
+                    </div>
+                </div>
+            <?php else:
+                foreach($pictures as $pict) :
+                    $adr =  "/img/lg/".$pict->getPath();
+                    $thumb = "/img/thumbs/".$pict->getPath();?>
+                    <div data-thumb="<?=$thumb?>" data-src="<?=$adr?>">
+                        <div class="camera_caption fadeFromBottom">
+                            <?=$product->getName();?>
+                        </div>
+                    </div>
+                <?php endforeach;
+            endif;?>
+                                 
+        </div>
+    </div>
 </div>

@@ -1,5 +1,6 @@
 <?php
 print $this->showMessages();
+$i = 0;
 ?>
 
 <div class="row">
@@ -12,27 +13,32 @@ print $this->showMessages();
             $propName = $property->getProps()->getName();
             $str .= "/".$propName." - ".$propValue." ";
         }
-        $text = mb_substr($str,1,400,'UTF-8')."...";
+
+        $text = mb_substr(strip_tags($str),1,340,'UTF-8')."...";
+        $id = $product->getId();
+        $name = $product->getName();
+        $pict = $product->getPictures()->first() ? $product->getPictures()->first()->getPath() : 'nophoto.png';
         ?>
         <div class="col-sm-6 col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <a href="<?=$this->url('catalog', array('action'=>'view', 'id' => $product->getId()));?>">
-                        <h4 class="media-heading"><?=$product->getName();?></h4>
-                    </a>
-                </div>
-                <div class="panel-body">
-                    <div class="media-left media-middle">
-                        <a href="<?=$this->url('catalog', array('action'=>'view', 'id' => $product->getId()));?>">
-                            <img class="media-object" src="/img/lg/<?=$product->getPictures()->first()->getPath();?>" alt="<?=$product->getName();?>">
-                        </a>
+            <a class="unst" href="<?=$this->url('catalog', array('action'=>'view', 'id' => $id));?>">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                            <h4 class="media-heading text-center"><?=$name?></h4>
                     </div>
-                    <div class="media-body">
-                        <p><?=$text;?></p>
+                    <div class="panel-body">
+                        <div class="media-left media-middle">
+                                <img class="media-object" src="/img/lg/<?=$pict?>" alt="<?=$name?>">
+                        </div>
+                        <div class="media-body">
+                            <p><?=$text;?></p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
-    <?php endforeach;?>
+    <?php
+        $i++;
+        if ($i%3 == 0) { echo '</div><div class="row">';}
+    endforeach;?>
 </div>
 
