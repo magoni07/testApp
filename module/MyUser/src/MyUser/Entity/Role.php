@@ -5,12 +5,9 @@
  * @link https://github.com/bjyoungblood/BjyAuthorize for the canonical source repository
  * @license http://framework.zend.com/license/new-bsd New BSD License
  */
-
-namespace MyUser;
-
+namespace MyUser\Entity;
 use BjyAuthorize\Acl\HierarchicalRoleInterface;
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * An example entity that represents a role.
  *
@@ -28,19 +25,16 @@ class Role implements HierarchicalRoleInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
     /**
      * @var string
      * @ORM\Column(type="string", length=255, unique=true, nullable=true)
      */
     protected $roleId;
-
     /**
      * @var Role
-     * @ORM\ManyToOne(targetEntity="MyNamespace\Role")
+     * @ORM\ManyToOne(targetEntity="MyUser\Entity\Role")
      */
     protected $parent;
-
     /**
      * Get the id.
      *
@@ -50,7 +44,6 @@ class Role implements HierarchicalRoleInterface
     {
         return $this->id;
     }
-
     /**
      * Set the id.
      *
@@ -62,7 +55,6 @@ class Role implements HierarchicalRoleInterface
     {
         $this->id = (int)$id;
     }
-
     /**
      * Get the role id.
      *
@@ -72,7 +64,6 @@ class Role implements HierarchicalRoleInterface
     {
         return $this->roleId;
     }
-
     /**
      * Set the role id.
      *
@@ -84,7 +75,6 @@ class Role implements HierarchicalRoleInterface
     {
         $this->roleId = (string) $roleId;
     }
-
     /**
      * Get the parent role
      *
@@ -94,11 +84,10 @@ class Role implements HierarchicalRoleInterface
     {
         return $this->parent;
     }
-
     /**
      * Set the parent role.
      *
-     * @param Role
+     * @param Role $role
      *
      * @return void
      */

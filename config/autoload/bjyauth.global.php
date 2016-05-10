@@ -32,7 +32,6 @@ return array(
                     'action' => array('logout'),
                     'roles' => array('user'),
                 ),
-                array('controller' => 'Application\Controller\Index', 'roles' => array()),
                 array(
                     'controller' => 'Catalog\Controller\Catalog',
                     'action' => array('index', 'view'),

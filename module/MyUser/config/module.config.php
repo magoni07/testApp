@@ -1,4 +1,6 @@
 <?php
+namespace MyUser;
+
 return array(
     'doctrine' => array(
         'driver' => array(
@@ -27,6 +29,21 @@ return array(
             'BjyAuthorize\Provider\Role\ObjectRepositoryProvider' => array(
                 'object_manager'    => 'doctrine.entity_manager.orm_default',
                 'role_entity_class' => 'MyUser\Entity\Role',
+            ),
+        ),
+    ),
+    'view_manager' => array(
+        'template_path_stack' => array(
+            'zfc-user' => __DIR__ . '/../view',
+        ),
+    ),
+    'translator' => array(
+        'locale' => 'ru_RU',
+        'translation_file_patterns' => array(
+            array(
+                'type'     => 'gettext',
+                'base_dir' => __DIR__ . '/../language',
+                'pattern'  => '%s.mo',
             ),
         ),
     ),

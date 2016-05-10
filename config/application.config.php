@@ -11,11 +11,12 @@ return array(
         'ZfcBase',
         'ZfcUser',
         'ZfcUserDoctrineORM',
-        'BjyAuthorize',
-        'Catalog',
+        'BjyAuthorize',        
         'DoctrineModule',
         'DoctrineORMModule',
         'ZendDeveloperTools',
+        'Catalog',
+        'MyUser',        
     ),
 
     // These are various options for the listeners attached to the ModuleManager

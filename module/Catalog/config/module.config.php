@@ -13,7 +13,6 @@ return array(
             'Catalog\Controller\Catalog' => 'Catalog\Controller\CatalogController',
         ),
     ),
-
     'router' => array(
         'routes' => array(
             'home' => array(
@@ -42,7 +41,6 @@ return array(
             ),
         ),
     ),
-
     'view_manager' => array(
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
@@ -59,13 +57,11 @@ return array(
             'catalog' => __DIR__ . '/../view',
         ),
     ),
-
     'view_helpers' => array(
         'invokables' => array(
             'showMessages' => 'Catalog\View\Helper\ShowMessages',
         ),
     ),
-
     'doctrine' => array(
         'driver' => array(
             __NAMESPACE__ . '_driver' => array(
