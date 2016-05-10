@@ -5,9 +5,10 @@ $i = 0;
 
 <div class="row">
     <?php
-    foreach($this->products as $product) :
+    foreach($this->paginator as $product) :
         $str = '';
         $properties = $product->getProperties()->toArray();
+
         foreach($properties as $property) {
             $propValue = $property->getValue();
             $propName = $property->getProps()->getName();
@@ -41,4 +42,13 @@ $i = 0;
         if ($i%3 == 0) { echo '</div><div class="row">';}
     endforeach;?>
 </div>
+<?php
+echo $this->paginationControl(
+    $this->paginator,
+    'sliding',
+    'partial/paginator.phtml',
+    array(
+        'route' => 'home'
+    )
+);
 
