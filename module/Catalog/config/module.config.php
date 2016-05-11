@@ -1,16 +1,13 @@
 <?php
 namespace Catalog;
 
-//use Catalog\Controller\CatalogController;
-//use Catalog\Controller\CatalogControllerFactory;
+use Catalog\Controller\CatalogController;
+use Catalog\Factory\CatalogControllerFactory;
 
 return array(
     'controllers' => array(
-//        'factories' => array(
-//            CatalogController::class => CatalogControllerFactory::class,
-//        ),
-        'invokables' => array(
-            'Catalog\Controller\Catalog' => 'Catalog\Controller\CatalogController',
+        'factories' => array(
+            CatalogController::class => CatalogControllerFactory::class,
         ),
     ),
     'router' => array(
@@ -20,7 +17,7 @@ return array(
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
-                        'controller' => 'Catalog\Controller\Catalog', //Controller
+                        'controller' => CatalogController::class,
                         'action'     => 'index',
                     ),
                 ),
@@ -34,7 +31,7 @@ return array(
                         'id'     => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Catalog\Controller\Catalog',
+                        'controller' => CatalogController::class,
                         'action'     => 'index',
                     ),
                 ),
@@ -80,6 +77,6 @@ return array(
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
             'Zend\Log\LoggerAbstractServiceFactory',
-        )
+        ),
     ),
 );

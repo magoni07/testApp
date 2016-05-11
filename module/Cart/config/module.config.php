@@ -1,10 +1,13 @@
 <?php
 namespace Cart;
 
+use Cart\Factory\CartControllerFactory;
+use Cart\Controller\CartController;
+
 return array(
     'controllers' => array(
-        'invokables' => array(
-            'Cart\Controller\Cart' => 'Cart\Controller\CartController',
+        'factories' => array(
+            CartController::class => CartControllerFactory::class,
         ),
     ),
     'doctrine' => array(
@@ -31,7 +34,7 @@ return array(
                         'id'     => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Cart\Controller\Cart',
+                        'controller' => CartController::class,
                         'action'     => 'index',
                     ),
                 ),

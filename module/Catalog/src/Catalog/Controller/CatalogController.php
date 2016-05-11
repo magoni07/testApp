@@ -6,23 +6,20 @@ use Zend\View\Model\ViewModel;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Zend\Paginator\Paginator;
-use Zend\Json;
-//use Doctrine\ORM\EntityManager;
-//use Zend\Db\Adapter\AdapterInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 class CatalogController extends AbstractActionController
 {
-//    private $db;
-//
-//    public function __construct(AdapterInterface $db)
-//    {
-//        $this->db = $db;
-//    }
+    private $db;
+
+    public function __construct(EntityManagerInterface $db)
+    {
+        $this->db = $db;
+    }
 
     public function indexAction()
-    {
-        $em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
-        $repository = $em->getRepository('\Catalog\Entity\Goods');
+    {        
+        $repository = $this->db->getRepository('\Catalog\Entity\Goods');
 
         $adapter = new DoctrineAdapter(new ORMPaginator($repository->createQueryBuilder('product')));
         $paginator = new Paginator($adapter);
@@ -37,20 +34,16 @@ class CatalogController extends AbstractActionController
 
     public function viewAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        $id = (int) $this->params()->fromRoute('id');
         if (!$id) {
-            $this->flashMessenger()->addErrorMessage('Product id doesn\'t set');
+            $this->flashMessenger()->addErrorMessage('Не указан id товара');
             return $this->redirect()->toRoute('catalog');
         }
 
-        $objectManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
-
-        $product = $objectManager
-            ->getRepository('\Catalog\Entity\Goods')
-            ->findOneBy(array('id' => $id));
+        $product = $this->db->getRepository('\Catalog\Entity\Goods')->findOneBy(array('id' => $id));
 
         if (!$product) {
-            $this->flashMessenger()->addErrorMessage(sprintf('Product with id %s doesn\'t exists', $id));
+            $this->flashMessenger()->addErrorMessage(sprintf('Такого товара не существует', $id));
             return $this->redirect()->toRoute('catalog');
         }
 

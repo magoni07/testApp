@@ -3,8 +3,8 @@
 namespace Cart\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-//use MyUser\Entity\User;
-//use Catalog\Entity\Goods;
+use MyUser\Entity\User;
+use Catalog\Entity\Goods;
 
 /**
  * Cart
@@ -91,7 +91,7 @@ class Cart
      * @param \MyUser\Entity\User $user
      * @return Cart
      */
-    public function setUser(\MyUser\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -114,7 +114,7 @@ class Cart
      * @param \Catalog\Entity\Goods $goods
      * @return Cart
      */
-    public function setGoods(\Catalog\Entity\Goods $goods = null)
+    public function setGoods(Goods $goods = null)
     {
         $this->goods = $goods;
 

@@ -33,12 +33,12 @@ return array(
                     'roles' => array('user'),
                 ),
                 array(
-                    'controller' => 'Catalog\Controller\Catalog',
+                    'controller' => 'Catalog\Controller\CatalogController',
                     'action' => array('index', 'view'),
                     'roles' => array('guest', 'user'),
                 ),
                 array(
-                    'controller' => 'Cart\Controller\Cart',
+                    'controller' => 'Cart\Controller\CartController',
                     'action' => array('index'),
                     'roles' => array('guest', 'user'),
                 ),

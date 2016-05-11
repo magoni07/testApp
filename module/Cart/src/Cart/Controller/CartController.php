@@ -3,9 +3,17 @@ namespace Cart\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Doctrine\ORM\EntityManagerInterface;
 
 class CartController extends AbstractActionController
 {
+    private $db;
+
+    public function __construct(EntityManagerInterface $db)
+    {
+        $this->db = $db;
+    }
+    
     public function indexAction()
     {
         $cart = [];
