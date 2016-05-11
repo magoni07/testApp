@@ -37,7 +37,7 @@ div.container a.brand {
 }
 
 img{
-  &.media-object {
+  &.media-object-fix {
     height: 200px;
     padding: 5px;
   }
@@ -66,4 +66,15 @@ a, a:hover{
 
 .navbar-brand>img {
   display: inline;
+}
+
+.table {
+  tbody{
+    tr{
+      td{
+        vertical-align: middle;
+      }
+    }
+  }
+
 }

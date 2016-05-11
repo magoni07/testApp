@@ -46,7 +46,7 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <?php if ($this->zfcUserIdentity()):?>
-                            <li><a href="<?php echo $this->url('zfcuser', array('action' => 'edit')) ?>">Профиль <?=$this->ZfcUserDisplayName();?></a></li>
+                            <li><a href="<?php echo $this->url('zfcuser', array('action' => 'edit')) ?>"><?=$this->ZfcUserDisplayName();?></a></li>
                         <?php else :?>
                             <li><a href="<?php echo $this->url('zfcuser', array('action' => 'login')) ?>">Войти</a></li>
                         <?php endif;?>

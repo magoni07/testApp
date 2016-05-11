@@ -30,7 +30,7 @@ div.container a.brand {
   margin-left: 0;
   padding: 8px 20px 12px 40px; }
 
-img.media-object {
+img.media-object-fix {
   height: 200px;
   padding: 5px; }
 
@@ -51,5 +51,8 @@ a.unst, a:hover.unst {
 
 .navbar-brand > img {
   display: inline; }
+
+.table tbody tr td {
+  vertical-align: middle; }
 
 /*# sourceMappingURL=style.css.map */

@@ -16,7 +16,8 @@ return array(
         'DoctrineORMModule',
         'ZendDeveloperTools',
         'Catalog',
-        'MyUser',        
+        'MyUser', 
+        'Cart'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

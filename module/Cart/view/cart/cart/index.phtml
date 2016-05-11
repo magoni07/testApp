@@ -1,0 +1,37 @@
+<?php
+print $this->showMessages();
+$cost = 0;
+?>
+<div class="row">
+    <div class="col-sm-8 col-md-offset-2">
+        <h2>Корзина</h2>
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Название продукта</th>
+                        <th>Колличество</th>
+                        <th>Цена</th></th>
+                    </tr>
+                    <?php
+                    foreach ($cartGoods as $product) :
+                        $name = $product['name'];
+                        $cost += $product['cost'];?>
+                        <tr>
+                            <td>
+                                <img src="/img/thumbs/<?=$product['pict'];?>" alt="<?=$name;?>">
+                                <b><?=$name;?></b>
+                            </td>
+                            <td><?=$product['amount'];?></td>
+                            <td><?=$product['price'];?></td>
+                        </tr>
+                    <?php endforeach;?>
+                    <tr>
+                        <td colspan="2">Общая стоимость</td>
+                        <td><?=$cost?> грн.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

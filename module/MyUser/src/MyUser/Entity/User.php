@@ -71,11 +71,18 @@ class User implements UserInterface, ProviderInterface
     protected $roles;
 
     /**
+     *
+     * @ORM\OneToMany(targetEntity="Cart\Entity\Cart", mappedBy="user")
+     */
+    private $cart;
+
+    /**
      * Initialies the roles variable.
      */
     public function __construct()
     {
         $this->roles = new ArrayCollection();
+        $this->cart = new ArrayCollection();
     }
 
     /**
@@ -230,5 +237,15 @@ class User implements UserInterface, ProviderInterface
     public function addRole($role)
     {
         $this->roles[] = $role;
+    }
+
+    /**
+     * Get cart
+     *
+     * @return array
+     */
+    public function getCart()
+    {
+        return $this->cart;
     }
 }

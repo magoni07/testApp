@@ -37,6 +37,11 @@ return array(
                     'action' => array('index', 'view'),
                     'roles' => array('guest', 'user'),
                 ),
+                array(
+                    'controller' => 'Cart\Controller\Cart',
+                    'action' => array('index'),
+                    'roles' => array('guest', 'user'),
+                ),
             ),
         ),
     ),
