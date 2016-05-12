@@ -73,8 +73,19 @@ a, a:hover{
     tr{
       td{
         vertical-align: middle;
+        &.name{
+          width: 60%;
+        }
+        &.num{
+          width: 20%;
+        }
       }
     }
   }
+}
 
+.qty {
+  display: inline;
+  width: 50px;
+  text-align: center;
 }

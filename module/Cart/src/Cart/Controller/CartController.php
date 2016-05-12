@@ -37,10 +37,11 @@ class CartController extends AbstractActionController
             $userCart = $identity->getCart();
 
             foreach ($userCart as $product) {
-                $goodsId = $product->getId();
+                $goodsId = $product->getId();                
                 $cart[$goodsId]['amount'] = $product->getAmount();
                 $cart[$goodsId]['name'] = $product->getGoods()->getName();
                 $cart[$goodsId]['price'] = $product->getGoods()->getPrice();
+                $cart[$goodsId]['stock'] = $product->getGoods()->getAmount();
                 $cart[$goodsId]['pict'] = $product->getGoods()->getPictures()->first() ? $product->getGoods()->getPictures()->first()->getPath() : 'nophoto.png';
 
             }
@@ -61,6 +62,13 @@ class CartController extends AbstractActionController
             $this->addToSession();
         }
         return $this->redirect()->toRoute('cart');
+    }
+    public function updCartElem(){
+        if ($identity = $this->getIdentity()) {
+            
+        } else {
+            
+        }        
     }
 
     protected function addToDB($user)
@@ -96,6 +104,7 @@ class CartController extends AbstractActionController
             $this->session['cart'][$goodsID]['amount'] = $request->getPost()->get('amount');
             $this->session['cart'][$goodsID]['name'] = $goods->getName();
             $this->session['cart'][$goodsID]['price'] = $goods->getPrice();
+            $this->session['cart'][$goodsID]['stock'] = $goods->getAmount();
             $this->session['cart'][$goodsID]['pict'] = $goods->getPictures()->first() ? $goods->getPictures()->first()->getPath() : 'nophoto.png';
         }
     }

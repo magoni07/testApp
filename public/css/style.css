@@ -54,5 +54,14 @@ a.unst, a:hover.unst {
 
 .table tbody tr td {
   vertical-align: middle; }
+  .table tbody tr td.name {
+    width: 60%; }
+  .table tbody tr td.num {
+    width: 20%; }
+
+.qty {
+  display: inline;
+  width: 50px;
+  text-align: center; }
 
 /*# sourceMappingURL=style.css.map */

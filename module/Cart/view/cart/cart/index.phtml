@@ -14,16 +14,27 @@ $cost = 0;
                         <th>Цена</th></th>
                     </tr>
                     <?php
-                    foreach ($cartGoods as $product) :
+                    foreach ($cartGoods as $goodsID => $product) :
                         $name = $product['name'];
-                        $cost += $product['amount']*$product['price'];?>
-                        <tr>
-                            <td>
+                        $amount = $product['amount'];
+                        $price = $product['price'];
+                        $stock = $product['stock'];
+                        $cost += $amount*$price;?>
+                        <tr data-goods-id="<?=$goodsID?>">
+                            <td class="name">
                                 <img src="/img/thumbs/<?=$product['pict'];?>" alt="<?=$name;?>">
                                 <b><?=$name;?></b>
                             </td>
-                            <td><?=$product['amount'];?></td>
-                            <td><?=$product['price'];?></td>
+                            <td class="num">
+                                <button type="button" class="btn btn-default btn-sm" data-sign="less">
+                                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                </button>
+                                <input type="text" class="qty" value="<?=$amount;?>" data-stock-qty="<?=$stock?>" disabled>
+                                <button type="button" class="btn btn-default btn-sm" data-sign="more">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                </button>
+                            </td>
+                            <td><?=$price;?> грн.</td>
                         </tr>
                     <?php endforeach;?>
                     <tr>
@@ -32,6 +43,36 @@ $cost = 0;
                     </tr>
                 </tbody>
             </table>
+            <button type="button" class="btn btn-success">Оформить заказ</button>
         </div>
     </div>
 </div>
+<script>
+    $('button[data-sign]').on('click', function () {
+        var goodsId = this.closest('tr').getAttribute('data-goods-id'),
+            sign = this.getAttribute('data-sign'),
+            qty, stock;
+
+        switch (sign) {
+        case 'more':
+            qty = +this.previousElementSibling.getAttribute('value');
+            stock = +this.previousElementSibling.getAttribute('data-stock-qty');
+            if (qty < stock) {
+                qty++;
+            }
+            this.previousElementSibling.setAttribute('value', qty);
+            break;
+        case 'less':
+            qty = +this.nextElementSibling.getAttribute('value');
+            if (qty > 1) {
+                qty--;
+            }
+            this.nextElementSibling.setAttribute('value', qty);
+        }
+        $('button').attr('disabled',"disabled");
+        setTimeout(activateButt,5000);
+    });
+    function activateButt() {
+        $('button').removeAttr('disabled');
+    }
+</script>
