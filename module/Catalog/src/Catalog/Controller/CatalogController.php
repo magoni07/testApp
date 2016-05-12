@@ -1,6 +1,7 @@
 <?php
 namespace Catalog\Controller;
 
+use Catalog\Form\ItemForm;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
@@ -47,8 +48,10 @@ class CatalogController extends AbstractActionController
             return $this->redirect()->toRoute('catalog');
         }
 
+        $form = new ItemForm();
         $view = new ViewModel(array(
             'product' => $product,
+            'form' => $form,
         ));
 
         return $view;

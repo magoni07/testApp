@@ -32,9 +32,7 @@ class GoodsProp
      * @var \Catalog\Entity\Goods
      *
      * @ORM\ManyToOne(targetEntity="Catalog\Entity\Goods", inversedBy="properties")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="goods_id", referencedColumnName="id")
-     * })
+     * 
      */
     private $goods;
 

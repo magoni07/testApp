@@ -32,9 +32,6 @@ class GoodsPict
      * @var \Catalog\Entity\Goods
      *
      * @ORM\ManyToOne(targetEntity="Catalog\Entity\Goods", inversedBy="pictures")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="goods_id", referencedColumnName="id")
-     * })
      */
     private $goods;
 

@@ -3,11 +3,11 @@ namespace Catalog\Form;
 
 use Zend\Form\Form;
 
-class ItemForm extends Form
+class CartForm extends Form
 {
     public function __construct($name = null)
     {
-        parent::__construct('item');
+        parent::__construct('cart');
         $this->setAttribute('method', 'post');
         $this->add(array(
             'name' => 'security',

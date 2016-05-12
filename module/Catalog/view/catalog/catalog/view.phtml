@@ -4,6 +4,10 @@ print $this->showMessages();
 $pictures = $product->getPictures()->toArray();
 $properties = $product->getProperties()->toArray();
 $adr = "/img/lg/nophoto.png";
+
+$form = $this->form;
+$form->setAttribute('action', $this->url('cart', array('action' => 'add')));
+$form->prepare();
 ?>
 <div class="row">
     <div class="col-xs-4">
@@ -28,7 +32,13 @@ $adr = "/img/lg/nophoto.png";
         </div>
         <div class="row">
             <h3>Цена: <?=$product->getPrice();?> грн.</h3>
-            <button type="button" class="btn btn-success">Купить</button>
+            <?php
+            echo $this->form()->openTag($form);
+            echo $this->formHidden($form->get('security'));
+            echo $this->formHidden($form->get('goods')->setAttribute('value', $product->getId()));
+            echo $this->formHidden($form->get('amount')->setAttribute('value', 1));
+            echo $this->formSubmit($form->get('submit')->setAttribute('class', 'btn btn-success'));
+            echo $this->form()->closeTag();?>
             <p></p>
         </div>
         <div class="row">

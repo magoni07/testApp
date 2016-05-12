@@ -34,12 +34,10 @@ return array(
                 ),
                 array(
                     'controller' => 'Catalog\Controller\CatalogController',
-                    'action' => array('index', 'view'),
                     'roles' => array('guest', 'user'),
                 ),
                 array(
                     'controller' => 'Cart\Controller\CartController',
-                    'action' => array('index'),
                     'roles' => array('guest', 'user'),
                 ),
             ),

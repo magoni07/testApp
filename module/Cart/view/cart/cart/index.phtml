@@ -16,7 +16,7 @@ $cost = 0;
                     <?php
                     foreach ($cartGoods as $product) :
                         $name = $product['name'];
-                        $cost += $product['cost'];?>
+                        $cost += $product['amount']*$product['price'];?>
                         <tr>
                             <td>
                                 <img src="/img/thumbs/<?=$product['pict'];?>" alt="<?=$name;?>">

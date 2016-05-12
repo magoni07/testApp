@@ -3,8 +3,6 @@
 namespace Cart\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use MyUser\Entity\User;
-use Catalog\Entity\Goods;
 
 /**
  * Cart
@@ -33,7 +31,7 @@ class Cart
     /**
      * @var \MyUser\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="MyUser\Entity\User")
+     * @ORM\ManyToOne(targetEntity="MyUser\Entity\User", inversedBy="cart")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * })
@@ -91,7 +89,7 @@ class Cart
      * @param \MyUser\Entity\User $user
      * @return Cart
      */
-    public function setUser(User $user = null)
+    public function setUser($user = null)
     {
         $this->user = $user;
 
@@ -114,7 +112,7 @@ class Cart
      * @param \Catalog\Entity\Goods $goods
      * @return Cart
      */
-    public function setGoods(Goods $goods = null)
+    public function setGoods($goods = null)
     {
         $this->goods = $goods;
 
