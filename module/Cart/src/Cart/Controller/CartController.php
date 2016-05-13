@@ -5,6 +5,7 @@ use Cart\Entity\Cart;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Doctrine\ORM\EntityManagerInterface;
+use Zend\View\Model\JsonModel;
 
 class CartController extends AbstractActionController
 {
@@ -15,6 +16,11 @@ class CartController extends AbstractActionController
     
     private $db;
 
+    public function __construct(EntityManagerInterface $db)
+    {
+        $this->db = $db;
+    }
+
     /**
      *
      * @param \Zend\Session\Container $session
@@ -23,57 +29,125 @@ class CartController extends AbstractActionController
     {
         $this->session = $session;
     }
-    
-    public function __construct(EntityManagerInterface $db)
-    {
-        $this->db = $db;
-    }
-    
+
+    /**
+     * @return ViewModel
+     */
     public function indexAction()
     {
-        $cart = [];
-        if ($identity = $this->getIdentity()) {
+        $cart = $this->getCart();
 
-            $userCart = $identity->getCart();
-
-            foreach ($userCart as $product) {
-                $goodsId = $product->getId();                
-                $cart[$goodsId]['amount'] = $product->getAmount();
-                $cart[$goodsId]['name'] = $product->getGoods()->getName();
-                $cart[$goodsId]['price'] = $product->getGoods()->getPrice();
-                $cart[$goodsId]['stock'] = $product->getGoods()->getAmount();
-                $cart[$goodsId]['pict'] = $product->getGoods()->getPictures()->first() ? $product->getGoods()->getPictures()->first()->getPath() : 'nophoto.png';
-
-            }
-        } else {
-            $cart = $this->session->offsetGet('cart');
-        }
-
-        $view = new ViewModel();
-        $view->setVariable('cartGoods', $cart);
-        return $view;
+        return new ViewModel([
+            'cartGoods' => $cart
+        ]);
     }
 
+    /**
+     * @return \Zend\Http\Response
+     */
     public function addAction()
     {
         if ($identity = $this->getIdentity()) {
+
             $this->addToDB($identity);
+
         } else {
             $this->addToSession();
         }
+
         return $this->redirect()->toRoute('cart');
     }
-    public function updCartElem(){
-        if ($identity = $this->getIdentity()) {
-            
-        } else {
-            
-        }        
+
+    /**
+     * @return JsonModel
+     */
+    public function deleteAction()
+    {
+        $request = $this->getRequest();
+
+        if ($request->isXmlHttpRequest()) {
+
+            $goodsID = $request->getPost()->get('id');
+
+            if ($identity = $this->getIdentity()) {
+
+                $goods = $this->db->getRepository('\Catalog\Entity\Goods')->findOneBy(array('id' => $goodsID));
+                $cartElem = $this->db->getRepository('\Cart\Entity\Cart')->findOneBy(["goods" => $goods, "user" => $identity]);
+                $this->db->remove($cartElem);
+                $this->db->flush();
+
+            } else {
+                unset($this->session['cart'][$goodsID]);
+            }
+        }
+
+        return new JsonModel(['total' => $this->getCartTotalPrice()]);
     }
 
+    /**
+     * @return JsonModel
+     */
+    public function updateAction(){
+        $request = $this->getRequest();
+
+        if ($request->isXmlHttpRequest()) {
+
+            $goodsID = $request->getPost()->get('id');
+            $amount = $request->getPost()->get('qty');
+
+            if ($identity = $this->getIdentity()) {
+
+                $goods = $this->db->getRepository('\Catalog\Entity\Goods')->findOneBy(array('id' => $goodsID));
+                $cartElem = $this->db->getRepository('\Cart\Entity\Cart')->findOneBy(["goods" => $goods, "user" => $identity]);
+                $cartElem->setAmount($amount);
+                $this->db->flush();
+
+            } else {
+                $this->session['cart'][$goodsID]['amount'] = $amount;
+            }
+        }
+
+        return new JsonModel(['total' => $this->getCartTotalPrice()]);
+    }
+
+    /**
+     * @return \Zend\Http\Response
+     */
+    public function updateloginAction()
+    {
+        if ($cartS = $this->session->offsetGet('cart')){
+
+            $identity = $this->getIdentity();
+
+            foreach ($cartS as $key => $product){
+
+                $amount = $product['amount'];
+                $goods = $this->db->getRepository('\Catalog\Entity\Goods')->findOneBy(array('id' => $key));
+                $cartElem = $this->db->getRepository('\Cart\Entity\Cart')->findOneBy(["goods" => $goods, "user" => $identity]);
+
+                if (!$cartElem){
+                    $cartElem = new Cart();
+                    $cartElem->setUser($identity);
+                    $cartElem->setGoods($goods);
+                    $this->db->persist($cartElem);
+                }
+
+                $cartElem->setAmount($amount);                
+                $this->db->flush();
+            }
+            unset($this->session['cart']);
+        }
+
+        return $this->redirect()->toRoute('cart');
+    }
+
+    /**
+     * @param $user
+     */
     protected function addToDB($user)
     {
         $request = $this->getRequest();
+
         if ($request->isPost()) {
 
             $goodsID = $request->getPost()->get('goods');
@@ -91,9 +165,14 @@ class CartController extends AbstractActionController
         }
     }
 
+    /**
+     *
+     */
     protected function addToSession(){
         $request = $this->getRequest();
+
         if ($request->isPost()) {
+
             $goodsID = $request->getPost()->get('goods');
             $goods = $this->db->getRepository('\Catalog\Entity\Goods')->findOneBy(array('id' => $goodsID));
 
@@ -109,12 +188,68 @@ class CartController extends AbstractActionController
         }
     }
 
+    /**
+     * @return bool
+     */
     protected function getIdentity()
     {
         if ($this->zfcUserAuthentication()->hasIdentity()) {
-            return $this->zfcUserAuthentication()->getIdentity();
+
+            $res = $this->zfcUserAuthentication()->getIdentity();
         } else {
-            return false;
+            $res = false;
         }
+        return $res;
+    }
+
+    /**
+     * @return array|mixed
+     */
+    protected function getCart(){
+        $cart = [];
+        if ($identity = $this->getIdentity()) {
+
+            $userCart = $identity->getCart();
+
+            foreach ($userCart as $product) {
+                $goodsId = $product->getGoods()->getId();
+                $cart[$goodsId]['amount'] = $product->getAmount();
+                $cart[$goodsId]['name'] = $product->getGoods()->getName();
+                $cart[$goodsId]['price'] = $product->getGoods()->getPrice();
+                $cart[$goodsId]['stock'] = $product->getGoods()->getAmount();
+                $cart[$goodsId]['pict'] = $product->getGoods()->getPictures()->first() ? $product->getGoods()->getPictures()->first()->getPath() : 'nophoto.png';
+
+            }
+        } elseif ($this->session->offsetGet('cart')) {
+
+            $cart = $this->session->offsetGet('cart');
+        }
+        return $cart;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCartTotalPrice(){
+        $cart = $this->getCart();
+        $totalPrice = 0;
+
+        foreach ($cart as $product) {
+            $price = $product['price'];
+            $amount = $product['amount'];
+            $totalPrice += $price * $amount;
+        }
+
+        return $totalPrice;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getCartQty(){
+        $cart = $this->getCart();
+        $qty = count($cart);
+
+        return $qty;
     }
 }

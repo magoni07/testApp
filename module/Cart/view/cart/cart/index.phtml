@@ -3,7 +3,7 @@ print $this->showMessages();
 $cost = 0;
 ?>
 <div class="row">
-    <div class="col-sm-8 col-md-offset-2">
+    <div class="col-sm-10 col-md-offset-1">
         <h2>Корзина</h2>
         <div class="table-responsive">
             <table class="table">
@@ -12,6 +12,7 @@ $cost = 0;
                         <th>Название продукта</th>
                         <th>Колличество</th>
                         <th>Цена</th></th>
+                        <th></th>
                     </tr>
                     <?php
                     foreach ($cartGoods as $goodsID => $product) :
@@ -35,11 +36,17 @@ $cost = 0;
                                 </button>
                             </td>
                             <td><?=$price;?> грн.</td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-sm" data-remove="true">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </button>
+                            </td>
                         </tr>
                     <?php endforeach;?>
                     <tr>
                         <td colspan="2">Общая стоимость</td>
-                        <td><?=$cost?> грн.</td>
+                        <td id="cost"><?=$cost?> грн.</td>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>
@@ -49,30 +56,48 @@ $cost = 0;
 </div>
 <script>
     $('button[data-sign]').on('click', function () {
-        var goodsId = this.closest('tr').getAttribute('data-goods-id'),
-            sign = this.getAttribute('data-sign'),
-            qty, stock;
+        var $btn = $(this),
+            goodsId = $btn.closest('tr').attr('data-goods-id'),
+            sign = $btn.attr('data-sign'),
+            qty = +$btn.siblings('input').attr('value'),
+            stock = +$btn.siblings('input').attr('data-stock-qty'),
+            product, posting,
+            url = '/cart/update';
 
-        switch (sign) {
-        case 'more':
-            qty = +this.previousElementSibling.getAttribute('value');
-            stock = +this.previousElementSibling.getAttribute('data-stock-qty');
-            if (qty < stock) {
-                qty++;
-            }
-            this.previousElementSibling.setAttribute('value', qty);
-            break;
-        case 'less':
-            qty = +this.nextElementSibling.getAttribute('value');
-            if (qty > 1) {
-                qty--;
-            }
-            this.nextElementSibling.setAttribute('value', qty);
+        if (sign == 'more' && qty < stock) {
+            qty++;
+        } else if (sign == 'less' && qty > 1) {
+            qty--;
         }
+        $btn.siblings('input').attr('value', qty);
+
+        product = {id: goodsId, qty: qty};
+        posting = $.post(url, product);
+
         $('button').attr('disabled',"disabled");
-        setTimeout(activateButt,5000);
+
+        posting.done(function(data) {
+            $('button').removeAttr('disabled');
+            $('#cost').replaceWith( '<td id="cost">' + data.total + " грн.</td>" );
+        });
     });
-    function activateButt() {
-        $('button').removeAttr('disabled');
-    }
+
+    $('button[data-remove]').on('click', function () {
+        var $btn = $(this),
+            goodsId = $btn.closest('tr').attr('data-goods-id'),
+            data, posting,
+            url = '/cart/delete';
+
+        data = {id: goodsId};
+        posting = $.post(url, data);
+
+        $('button').attr('disabled',"disabled");
+
+        posting.done(function(data) {
+            $('button').removeAttr('disabled');
+            var selector = "tr[data-goods-id="+goodsId+"]";
+            $(selector).remove();
+            $('#cost').replaceWith( '<td id="cost">' + data.total + " грн.</td>" );
+        });
+    });
 </script>

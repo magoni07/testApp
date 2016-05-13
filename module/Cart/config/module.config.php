@@ -15,10 +15,9 @@ return array(
             'cart' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/cart[/:action][/:id]',
+                    'route'    => '/cart[/:action]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'     => '[0-9]+',
                     ),
                     'defaults' => array(
                         'controller' => CartController::class,
@@ -31,6 +30,14 @@ return array(
     'view_manager' => array(
         'template_path_stack' => array(
             'cart' => __DIR__ . '/../view',
+        ),
+        'strategies' => array(
+            'ViewJsonStrategy',
+        ),
+    ),
+    'view_helpers' => array(
+        'invokables' => array(
+            'showCart' => 'Cart\View\Helper\ShowCart',
         ),
     ),
     'doctrine' => array(
