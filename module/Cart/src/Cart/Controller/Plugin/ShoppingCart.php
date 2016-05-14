@@ -42,16 +42,14 @@ class ShoppingCart extends AbstractPlugin
         return $cart;
     }
 
-    public function insert($request){
-        $goodsID = $request->getPost()->get('goods');
-        $amount = $request->getPost()->get('amount');
-        $goods = $this->db->getRepository('\Catalog\Entity\Goods')->findOneBy(array('id' => $goodsID));
+    public function insert($id, $qty){        
+        $goods = $this->db->getRepository('\Catalog\Entity\Goods')->findOneBy(array('id' => $id));
         
         if ($this->identity) {
             $cart = new Cart();
             $cart->setUser($this->identity);
             $cart->setGoods($goods);
-            $cart->setAmount($amount);
+            $cart->setAmount($qty);
             $this->db->persist($cart);
             $this->db->flush();
         } else {
@@ -59,17 +57,16 @@ class ShoppingCart extends AbstractPlugin
                 $this->session['cart'] = array();
             }
             $pict = $goods->getPictures()->first();
-            $this->session['cart'][$goodsID]['amount'] = $request->getPost()->get('amount');
-            $this->session['cart'][$goodsID]['name'] = $goods->getName();
-            $this->session['cart'][$goodsID]['price'] = $goods->getPrice();
-            $this->session['cart'][$goodsID]['stock'] = $goods->getAmount();
-            $this->session['cart'][$goodsID]['pict'] = $pict ? $pict->getPath() : 'nophoto.png';
+            $this->session['cart'][$id]['amount'] = $qty;
+            $this->session['cart'][$id]['name'] = $goods->getName();
+            $this->session['cart'][$id]['price'] = $goods->getPrice();
+            $this->session['cart'][$id]['stock'] = $goods->getAmount();
+            $this->session['cart'][$id]['pict'] = $pict ? $pict->getPath() : 'nophoto.png';
         }
     }
 
-    public function delete($request){
-        $goodsID = $request->getPost()->get('id');
-        $cartElem = $this->getCartElem($goodsID);
+    public function delete($id){
+        $cartElem = $this->getCartElem($id);
 
         if ($this->identity) {
             $this->db->remove($cartElem);
@@ -79,16 +76,14 @@ class ShoppingCart extends AbstractPlugin
         }
     }
 
-    public function update($request){
-        $goodsID = $request->getPost()->get('id');
-        $amount = $request->getPost()->get('qty');
-        $cartElem = $this->getCartElem($goodsID);
+    public function update($id, $qty){       
+        $cartElem = $this->getCartElem($id);
 
         if ($this->identity) {
-            $cartElem->setAmount($amount);
+            $cartElem->setAmount($$qty);
             $this->db->flush();
         } else {
-            $cartElem['amount'] = $amount;
+            $cartElem['amount'] = $$qty;
         }
     }
     

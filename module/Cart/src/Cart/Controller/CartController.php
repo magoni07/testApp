@@ -26,7 +26,9 @@ class CartController extends AbstractActionController
     {
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $this->ShoppingCart()->insert($request);
+            $goodsID = $request->getPost()->get('goods');
+            $amount = $request->getPost()->get('amount');
+            $this->ShoppingCart()->insert($goodsID, $amount);
         }
         return $this->redirect()->toRoute('cart');
     }
@@ -39,7 +41,8 @@ class CartController extends AbstractActionController
         $request = $this->getRequest();
 
         if ($request->isXmlHttpRequest()) {
-            $this->ShoppingCart()->delete($request);            
+            $goodsID = $request->getPost()->get('id');
+            $this->ShoppingCart()->delete($goodsID);            
         }
 
         return new JsonModel(['total' => $this->ShoppingCart()->getCartTotalPrice()]);
@@ -52,7 +55,9 @@ class CartController extends AbstractActionController
         $request = $this->getRequest();
 
         if ($request->isXmlHttpRequest()) {
-            $this->ShoppingCart()->update($request);
+            $goodsID = $request->getPost()->get('id');
+            $amount = $request->getPost()->get('qty');
+            $this->ShoppingCart()->update($goodsID, $amount);
         }
 
         return new JsonModel(['total' => $this->ShoppingCart()->getCartTotalPrice()]);
