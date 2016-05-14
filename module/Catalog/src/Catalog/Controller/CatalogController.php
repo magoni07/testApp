@@ -1,7 +1,6 @@
 <?php
 namespace Catalog\Controller;
 
-use Cart\Controller\Plugin\ShoppingCart;
 use Catalog\Form\ItemForm;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;

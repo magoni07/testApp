@@ -78,12 +78,11 @@ class ShoppingCart extends AbstractPlugin
 
     public function update($id, $qty){       
         $cartElem = $this->getCartElem($id);
-
         if ($this->identity) {
-            $cartElem->setAmount($$qty);
+            $cartElem->setAmount($qty);
             $this->db->flush();
         } else {
-            $cartElem['amount'] = $qty;
+            $this->session['cart'][$id]['amount'] = $qty;
         }
     }
     

@@ -24,20 +24,20 @@ $cost = 0;
                         <tr data-goods-id="<?=$goodsID?>">
                             <td class="name">
                                 <img src="/img/thumbs/<?=$product['pict'];?>" alt="<?=$name;?>">
-                                <b><?=$name;?></b>
+                                <b><a href="catalog/view/<?=$goodsID?>"><?=$name;?></a></b>
                             </td>
                             <td class="num">
-                                <button type="button" class="btn btn-default btn-sm" data-sign="less">
+                                <button type="button" class="btn btn-default btn-xs" data-sign="less">
                                     <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                                 </button>
                                 <input type="text" class="qty" value="<?=$amount;?>" data-stock-qty="<?=$stock?>" disabled>
-                                <button type="button" class="btn btn-default btn-sm" data-sign="more">
+                                <button type="button" class="btn btn-default btn-xs" data-sign="more">
                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                 </button>
                             </td>
                             <td><?=$price;?> грн.</td>
                             <td>
-                                <button type="button" class="btn btn-default btn-sm" data-remove="true">
+                                <button type="button" class="btn btn-default btn-xs" data-remove="true">
                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                 </button>
                             </td>
@@ -78,6 +78,7 @@ $cost = 0;
 
         posting.done(function(data) {
             $('button').removeAttr('disabled');
+            updButtons();
             $('#cost').replaceWith( '<td id="cost">' + data.total + " грн.</td>" );
         });
     });
@@ -95,9 +96,24 @@ $cost = 0;
 
         posting.done(function(data) {
             $('button').removeAttr('disabled');
+            updButtons();
             var selector = "tr[data-goods-id="+goodsId+"]";
             $(selector).remove();
             $('#cost').replaceWith( '<td id="cost">' + data.total + " грн.</td>" );
         });
     });
+    function updButtons(){
+        $('button[data-sign]').each(function( index ) {
+            var $btn = $(this),
+                sign = $btn.attr('data-sign'),
+                qty = +$btn.siblings('input').attr('value'),
+                stock = +$btn.siblings('input').attr('data-stock-qty');
+            if (sign == 'more' && qty == stock) {
+                $btn.attr('disabled',"disabled");
+            } else if (sign == 'less' && qty == 1) {
+                $btn.attr('disabled',"disabled");
+            }
+        });
+    }
+    updButtons();
 </script>

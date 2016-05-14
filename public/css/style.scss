@@ -92,3 +92,8 @@ a, a:hover{
 .nav-tabs{
   margin-top: 20px;
 }
+.media-body {
+  &.cart{
+    width: auto;
+  }
+}
