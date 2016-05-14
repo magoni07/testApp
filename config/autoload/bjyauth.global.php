@@ -37,7 +37,7 @@ return array(
                     'roles' => array('guest', 'user'),
                 ),
                 array(
-                    'controller' => 'Cart\Controller\CartController',
+                    'controller' => 'Cart\Controller\Cart',
                     'roles' => array('guest', 'user'),
                 ),
             ),

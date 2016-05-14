@@ -1,19 +1,17 @@
 <?php
 namespace Cart\View\Helper;
 
+use Cart\Factory\ShoppingCartFactory;
 use Zend\View\Helper\AbstractHelper;
-use Cart\Factory\CartControllerFactory;
-use Zend\ServiceManager\ServiceManager;
+
 
 class ShowCart extends AbstractHelper
 {
     public function __invoke()
     {
-        $sm = new ServiceManager();
-
-        $cart = $sm->get(CartControllerFactory::class);
-        $cost = $cart->getCartTotalPrice();
-        $qty = $cart->getCartQty();
+        //$sl = $this->getServiceLocator();
+        $cost = 90;
+        $qty=1;
         switch ($qty) {
             case 0: $text = "В корзине ничего нет";
                 break;
@@ -27,10 +25,8 @@ class ShowCart extends AbstractHelper
         }
         $result = '<div id="cart">
                         <a href="/cart">
-                            <div id="cart-img">
-                                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                            </div>
-                            <div>'.$text.'</div>
+                            <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>                      
+                            <span>'.$text.'</span>
                         </a>
                     </div>';
         return $result;

@@ -1,6 +1,7 @@
 <?php
 namespace Catalog\Controller;
 
+use Cart\Controller\Plugin\ShoppingCart;
 use Catalog\Form\ItemForm;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -41,12 +42,31 @@ class CatalogController extends AbstractActionController
             return $this->redirect()->toRoute('catalog');
         }
 
-        $product = $this->db->getRepository('\Catalog\Entity\Goods')->findOneBy(array('id' => $id));
-
-        if (!$product) {
+        $goods = $this->db->getRepository('\Catalog\Entity\Goods')->findOneBy(array('id' => $id));
+        
+        if (!$goods) {
             $this->flashMessenger()->addErrorMessage(sprintf('Такого товара не существует', $id));
             return $this->redirect()->toRoute('catalog');
         }
+
+        $product['id'] = $goods->getId();
+        $product['name'] = $goods->getName();
+        $product['price'] = $goods->getPrice();
+        $product['descr'] = $goods->getDescr();
+        
+        $pictures = $goods->getPictures()->toArray();
+        foreach($pictures as $pict) {
+            $product['pictures'][] = $pict->getPath();
+        }
+        
+        $properties = $goods->getProperties()->toArray();
+        foreach($properties as $property) {
+            $name = $property->getProps()->getName();
+            $value = $property->getValue();
+            $product['properties']["$name"] = $value;
+        }
+
+        $product['inCart'] = !empty($this->ShoppingCart()->getCartElem("$id"));
 
         $form = new ItemForm();
         $view = new ViewModel(array(

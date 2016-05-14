@@ -1,14 +1,19 @@
 <?php
 namespace Cart;
 
-use Cart\Factory\CartControllerFactory;
 use Cart\Controller\CartController;
+use Cart\Factory\ShoppingCartFactory;
 
 return array(
     'controllers' => array(
-        'factories' => array(
-            CartController::class => CartControllerFactory::class,
+        'invokables' => array(
+            'Cart\Controller\Cart' => CartController::class,
         ),
+    ),
+    'controller_plugins' => array(
+        'factories' => array (
+            'ShoppingCart' => ShoppingCartFactory::class
+        )
     ),
     'router' => array(
         'routes' => array(
@@ -20,7 +25,7 @@ return array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => CartController::class,
+                        'controller' => 'Cart\Controller\Cart',
                         'action'     => 'index',
                     ),
                 ),

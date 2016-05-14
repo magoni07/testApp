@@ -1,8 +1,6 @@
 <?php
 print $this->showMessages();
 
-$pictures = $product->getPictures()->toArray();
-$properties = $product->getProperties()->toArray();
 $adr = "/img/lg/nophoto.png";
 
 $form = $this->form;
@@ -13,33 +11,36 @@ $form->prepare();
     <div class="col-xs-4">
         <div class="fluid_container">
             <div class="camera_wrap camera_magenta_skin" id="camera_wrap">
-                <?php if (count($pictures) == 0) :?>
+                <?php if (count($product['pictures']) == 0) :?>
                     <div data-thumb="<?=$adr?>" data-src="<?=$adr?>"></div>
                 <?php else:
-                    foreach($pictures as $pict) :
-                        $adr =  "/img/lg/".$pict->getPath();
-                        $thumb = "/img/thumbs/".$pict->getPath();?>
+                    foreach($product['pictures'] as $pict) :
+                        $adr =  "/img/lg/".$pict;
+                        $thumb = "/img/thumbs/".$pict;?>
                         <div data-thumb="<?=$thumb?>" data-src="<?=$adr?>" data-alignment="center"></div>
                     <?php endforeach;
                 endif;?>
-
             </div>
         </div>
     </div>
     <div class="col-xs-8">
         <div class="row">
-            <h1><?=$product->getName();?></h1>
+            <h1><?=$product['name'];?></h1>
         </div>
         <div class="row">
-            <h3>Цена: <?=$product->getPrice();?> грн.</h3>
+            <h3>Цена: <?=$product['price'];?> грн.</h3>
             <?php
-            echo $this->form()->openTag($form);
-            echo $this->formHidden($form->get('security'));
-            echo $this->formHidden($form->get('goods')->setAttribute('value', $product->getId()));
-            echo $this->formHidden($form->get('amount')->setAttribute('value', 1));
-            echo $this->formSubmit($form->get('submit')->setAttribute('class', 'btn btn-success'));
-            echo $this->form()->closeTag();?>
-            <p></p>
+            if ($product['inCart']){
+                echo '<button class="btn btn-default" disabled>Уже в корзине</button>';
+            } else {
+                echo $this->form()->openTag($form);
+                echo $this->formHidden($form->get('security'));
+                echo $this->formHidden($form->get('goods')->setAttribute('value', $product['id']));
+                echo $this->formHidden($form->get('amount')->setAttribute('value', 1));
+                echo $this->formSubmit($form->get('submit')->setAttribute('class', 'btn btn-success'));
+                echo $this->form()->closeTag();
+            }
+            ?>
         </div>
         <div class="row">
             <ul class="nav nav-tabs" role="tablist">
@@ -47,14 +48,12 @@ $form->prepare();
                 <li role="presentation"><a href="#prop" aria-controls="prop" role="tab" data-toggle="tab">Характеристики</a></li>
             </ul>
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="descr"><p><?=$product->getDescr();?></p></div>
+                <div role="tabpanel" class="tab-pane active" id="descr"><p><?=$product['descr'];?></p></div>
                 <div role="tabpanel" class="tab-pane" id="prop">
                     <dl class="dl-horizontal">
                         <?php
-                        foreach($properties as $property) {
-                            $propValue = $property->getValue();
-                            $propName = $property->getProps()->getName();
-                            echo "<p><dt>$propName</dt><dd>$propValue</dd></p>";
+                        foreach($product['properties'] as $name => $value) {
+                            echo "<p><dt>$name</dt><dd>$value</dd></p>";
                         }?>
                     </dl>
                 </div>
