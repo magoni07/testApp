@@ -72,6 +72,7 @@ class CartController extends AbstractActionController
     {
         $this->ShoppingCart()->merge();
 
-        return $this->redirect()->toRoute('zfcuser');
+        return new JsonModel(['total' => $this->ShoppingCart()->getCartTotalPrice(),
+                                'qty' => $this->ShoppingCart()->getCartQty()]);
     }
 }

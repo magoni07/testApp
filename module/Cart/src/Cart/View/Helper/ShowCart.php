@@ -26,11 +26,13 @@ class ShowCart extends AbstractHelper
             }
         } else {
             $cart = new Container('cart');
-            foreach ($cart['cart'] as $product) {
-                $price = $product['price'];
-                $amount = $product['amount'];
-                $cost += $price * $amount;
-                $qty += $amount;
+            if (!empty($cart['cart'])){
+                foreach ($cart['cart'] as $product) {
+                    $price = $product['price'];
+                    $amount = $product['amount'];
+                    $cost += $price * $amount;
+                    $qty += $amount;
+                }
             }
         }
 

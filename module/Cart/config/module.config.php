@@ -29,7 +29,6 @@ return array(
                         'action'     => 'index',
                     ),
                 ),
-                
             ),
         ),
     ),

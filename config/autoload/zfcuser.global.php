@@ -153,7 +153,7 @@ $settings = array(
      * Accepted values: A valid route name within your application
      *
      */
-    //'login_redirect_route' => 'cart/merge',
+    //'login_redirect_route' => 'zfcuser',
 
     /**
      * Logout Redirect Route
