@@ -15,6 +15,7 @@
                         ->prependStylesheet($this->basePath('css/style.css'))
                         ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
                         ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+                        ->prependStylesheet($this->basePath('css/jquery-ui.min.css'))
                         ->prependStylesheet($this->basePath('css/camera.css'))?>
 
         <!-- Scripts -->
@@ -22,11 +23,12 @@
             ->prependFile($this->basePath('js/bootstrap.min.js'))
             ->prependFile($this->basePath('js/jquery.min.js'))
             ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
-            ->prependFile($this->basePath('js/html5shiv.min.js'),   'text/javascript', array('conditional' => 'lt IE 9',))
+            ->prependFile($this->basePath('js/html5shiv.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
             ->offsetSetFile(101, $this->basePath('js/jquery.mobile.customized.min.js'))
             ->offsetSetFile(102, $this->basePath('js/jquery.easing.1.3.js'))
-            ->offsetSetFile(103, $this->basePath('js/camera.min.js'))
-            ->offsetSetFile(104, $this->basePath('js/app.js'))
+            ->offsetSetFile(103, $this->basePath('js/jquery-ui.min.js'))
+            ->offsetSetFile(104, $this->basePath('js/camera.min.js'))
+            ->offsetSetFile(105, $this->basePath('js/app.js'))
         ; ?>
 
     </head>

@@ -6,6 +6,6 @@
         <div style="float:left; padding-right:16px;"><?= $this->gravatar($this->zfcUserIdentity()->getEmail()) ?></div>
         <h3><?= $this->translate('Hello'); ?>, <?php echo $this->zfcUserDisplayName() ?>!</h3>
         <a class="btn btn-default" href="<?= $this->url('zfcuser/logout') ?>">Выйти</a>
-        <a class="btn btn-success" href="/cart/updatelogin">Слить корзины</a>
+        <a class="btn btn-success" href="/cart/merge">Слить корзины</a>
     </div>
 </div>

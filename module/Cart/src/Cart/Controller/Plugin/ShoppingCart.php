@@ -129,7 +129,11 @@ class ShoppingCart extends AbstractPlugin
      */
     public function getCartQty(){
         $cart = $this->getCart();
-        $qty = count($cart);
+        $qty = 0;
+        foreach ($cart as $product) {
+            $amount = $product['amount'];
+            $qty += $amount;
+        }
 
         return $qty;
     }

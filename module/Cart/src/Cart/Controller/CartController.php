@@ -45,7 +45,8 @@ class CartController extends AbstractActionController
             $this->ShoppingCart()->delete($goodsID);            
         }
 
-        return new JsonModel(['total' => $this->ShoppingCart()->getCartTotalPrice()]);
+        return new JsonModel(['total' => $this->ShoppingCart()->getCartTotalPrice(),
+                                'qty' => $this->ShoppingCart()->getCartQty()]);
     }
 
     /**
@@ -60,7 +61,8 @@ class CartController extends AbstractActionController
             $this->ShoppingCart()->update($goodsID, $amount);
         }
 
-        return new JsonModel(['total' => $this->ShoppingCart()->getCartTotalPrice()]);
+        return new JsonModel(['total' => $this->ShoppingCart()->getCartTotalPrice(),
+                                'qty' => $this->ShoppingCart()->getCartQty()]);
     }
 
     /**
@@ -70,6 +72,6 @@ class CartController extends AbstractActionController
     {
         $this->ShoppingCart()->merge();
 
-        return $this->redirect()->toRoute('cart');
+        return $this->redirect()->toRoute('zfcuser');
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace Cart\View\Helper;
 
+use Zend\Session\Container;
 use Zend\View\Helper\AbstractHelper;
 
 
@@ -8,12 +9,33 @@ class ShowCart extends AbstractHelper
 {
     public function __invoke()
     {
-        //$cart = $this->ShoppingCart();
-        
-        $cost = 90;
-        $qty=1;
+        $cost = 0;
+        $qty = 0;
+
+        $sm = $this->getView()->getHelperPluginManager()->getServiceLocator()->get('ServiceManager');
+        $auth = $sm->get('zfcuser_auth_service');
+
+        if ($auth->hasIdentity()) {
+            $identity = $auth->getIdentity();
+            $cart = $identity->getCart();
+            foreach ($cart as $product) {
+                $price = $product->getGoods()->getPrice();
+                $amount = $product->getAmount();;
+                $cost += $price * $amount;
+                $qty += $amount;
+            }
+        } else {
+            $cart = new Container('cart');
+            foreach ($cart['cart'] as $product) {
+                $price = $product['price'];
+                $amount = $product['amount'];
+                $cost += $price * $amount;
+                $qty += $amount;
+            }
+        }
+
         switch ($qty) {
-            case 0: $text = "В корзине ничего нет";
+            case 0: $text = "В корзине<br>товаров нет";
                 break;
             case 1: $text = "В корзине 1 товар <br> на сумму $cost грн.";
                 break;
