@@ -72,7 +72,7 @@ class ShoppingCart extends AbstractPlugin
             $this->db->remove($cartElem);
             $this->db->flush();
         } else {
-            unset($cartElem);
+            unset($this->session['cart'][$id]);
         }
     }
 
@@ -83,7 +83,7 @@ class ShoppingCart extends AbstractPlugin
             $cartElem->setAmount($$qty);
             $this->db->flush();
         } else {
-            $cartElem['amount'] = $$qty;
+            $cartElem['amount'] = $qty;
         }
     }
     
